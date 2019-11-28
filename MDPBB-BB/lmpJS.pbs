@@ -7,9 +7,11 @@
 # are required
 
 # Load modules for any applications
+module load anaconda3/personal
+source activate py27
 module load intel-suite
 module load mpi
-module load python/2.7.3
+
 #module load lammps
 
 # PBS jobs start running in $HOME, so need to move it elsewhere
