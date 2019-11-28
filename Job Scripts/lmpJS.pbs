@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#PBS -l select=1:ncpus=48:mpiprocs=32:mem=60gb
+#PBS -l select=1:ncpus=32:mpiprocs=32:mem=60gb
 #PBS -l walltime=24:00:00
 
 # Change above whatever computational resources
@@ -9,7 +9,8 @@
 # Load modules for any applications
 module load intel-suite
 module load mpi
-module load lammps
+module load python/2.7.3
+#module load lammps
 
 # PBS jobs start running in $HOME, so need to move it elsewhere
 # Ephemeral is a directory with unlimited space
@@ -34,7 +35,7 @@ cp $PBS_O_WORKDIR/* .
 #In this case I have my own executable, but either
 #load a different module above or change the path
 
-pbsexec mpiexec lmp_mpi -l log.lammps -in main.in
+pbsexec mpiexec /rds/general/user/maa4617/home/lammps-7Aug19/src/lmp_mpi -l log.lammps -in main.in
 
 # Copy any output back to the $PBS_O_WORKDIR
 #mkdir  $PBS_O_WORKDIR/Results
