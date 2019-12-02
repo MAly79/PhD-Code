@@ -78,30 +78,20 @@ group         twall  region wall
 variable      i loop $M                                   # Index to insert N total number of chains
 label         loop                                        # Start of loop
 variable      randni equal round(random(1,${ntwall},$s))  # Pick a random "top" wall atom
-#print         "seed is = $s"
-#print         "i = $(v_i)"
 variable      randatomi equal ${randni}                   # This is to obtain an integer number for atom-id
 variable      randzi equal z[${randatomi}]                # Determine the z coordinate of the chosen atom
-#print         "z coord of randatom is = ${randzi}"
 # if the chosen atom is not a surface atom then restart the loop
 if            "${randzi} < $(v_wthick - 0.7)" then "jump MDPBB.in loop"
 set           atom ${randatomi} type 4                    # Set this grafted wall atom as a new type
+group         twg id ${randatomi}                         # Add this atom to a top-wall-grafted group
+variable      twgcount equal count(twg)
+print         "twg contains ${twgcount}"
+print         "i = $(v_i)"                                # The index i should always be equal to the number of atom in twg
 variable      x0 equal x[${randatomi}]                    # Determine its x-coord
 variable      y0 equal y[${randatomi}]                    # Determine its y-coord
 variable      check0 equal ${check}                       # Count the number of atoms in the simulation
 variable      b equal ${check}+1                          # The grafted bead id will be one higher after being inserted
-#print         "Grafted Bead ID = $b"
-#print         "Random Wall atom = ${randatomi}"
-#print         "x = ${x0}"
-#print         "y = ${y0}"
-variable      flag python A_Check         # Define a flag to check that the atom-id was not previously picked
-# If flag = 1 then that means this random atom is already grafted if flag = 0 then atom is free to be grafted
-# Define a python function that performs this check and keeps track throughout the loop to ensure no atom is picked twice
-python        A_Check input 2 v_randatomi v_M return v_flag format iii file A_Check.py
-variable      flag0 equal ${flag}                         # Invoke the python function
-#print         "flag = ${flag0}"
-# If the atom has been picked previously then do not insert and restart the loop
-if            "${flag0} == 1" then "jump MDPBB.in loop"
+if            "${twgcount} != $(v_i)" then "jump MDPBB.in loop"
 # Otherwise insert the chain directly above the chosen wall atom pointing perpendicular to the wall
 create_atoms  1 single ${x0} ${y0} ${z0} mol bs 24987 units box remap yes rotate 0 0 0 1
 variable      check1 equal ${check}               # Count the new total number of atoms
@@ -126,28 +116,20 @@ variable      nbwall0 equal ${nbwall}
 variable      j loop $M
 label         loopj
 variable      randnj equal round(random(v_ntop0,$(v_ntop0 + v_nbwall0),$s))
-#print        "seed is = $s"
-#print        "j = $(v_j)"
 variable      randatomj equal ${randnj}
 variable      randzj equal z[${randatomj}]
-#print         "z coord of randatom is = ${randzj}"
 if            "${randzj} < $(v_wthick - 0.7)" then "jump MDPBB.in loopj"
 set           atom ${randatomj} type 4
+group         bwg id ${randatomj}                         # Add this atom to a bot-wall-grafted group
+variable      bwgcount equal count(bwg)
+print         "bwg contains ${bwgcount}"
+print         "j = $(v_j)"
 variable      x0 equal x[${randatomj}]
 variable      y0 equal y[${randatomj}]
 variable      check0 equal ${check}
 variable      b equal ${check}+1
-#print        "Grafted Bead ID = $b"
-#print        "Random Wall atom = ${randatomj}"
-#print        "x = ${x0}"
-#print        "y = ${y0}"
-variable      flag python A_Check
-python        A_Check input 2 v_randatomj v_M return v_flag format iii file A_Check.py
-variable      flag0 equal ${flag}
-#print        "flag = ${flag0}"
-if            "${flag0} == 1" then "jump MDPBB.in loopj"
+if            "${bwgcount} != $(v_j)" then "jump MDPBB.in loopj"
 create_atoms  1 single ${x0} ${y0} ${z0} mol bs 24987 units box remap yes rotate 0 0 0 1
-
 variable      check1 equal ${check}
 if            "${check1} != ${check0}" then "create_bonds  single/bond 2 ${randatomj} $b" &
 "next j"
@@ -169,7 +151,7 @@ info system
 fix           1 twall setforce 0.0 0.0 0.0  # Freeze top wall
 fix           2 bwall setforce 0.0 0.0 0.0  # Freeze bottom wall
 
-#dump           1 all image 250 stg0.*.jpg type type zoom 2 view 60 120 bond none none
+dump           1 all image 250 stg0.*.jpg type type zoom 2 view 60 120 bond none none
 #dump          2 all atom 50 dump.brush
 #dump          3 all custom 100 dump.random.bin id x y z vx vy vz
 
