@@ -138,12 +138,6 @@ group           rest_top2 subtract all twsurf
 compute         ggtop twsurf group/group rest_top
 compute         ggtop2 twsurf group/group rest_top2
 
-#--- Calculate pressure of simulation area (Copy pasta) --#
-
-compute        mopzt abeads stress/mop z ${twzmin} total
-compute        mopzc abeads stress/mop z center total
-compute        mopxc abeads stress/mop x center total
-
 
 #--- Calculate the applied force on each atom for the pressure applied---#
 variable Fcomp equal (${Pcomp}*lx*ly)
@@ -204,7 +198,7 @@ variable        sbot equal  f_freeze_bout[1]/(lx*ly)
 variable        pbot equal -f_freeze_bout[3]/(lx*ly)
 #--- Thermo output ---#
 
-thermo_style  custom step etotal ke pe epair temp c_melTemp c_wallTemp v_Fcatom v_Pcomp2 press pxx pyy pzz pxy pxz pyz c_melPress c_wallPress c_mopzc[1] c_mopzc[3] c_mopxc[3] v_melDens v_surfcov v_aveRg v_Wall_v2 v_srate v_D v_bwzmax zhi c_fbwall[1] c_fbwall[3] c_ftwall[1] c_ftwall[3] v_sbot v_pbot #c_ggbot[1] c_ggbot[3] c_ggtop[1] c_ggtop[3]
+thermo_style  custom step etotal ke pe epair temp c_melTemp c_wallTemp v_Fcatom v_Pcomp2 press pxx pyy pzz pxy pxz pyz c_melPress c_wallPress v_melDens v_surfcov v_aveRg v_Wall_v2 v_srate v_D v_bwzmax zhi c_fbwall[1] c_fbwall[3] c_ftwall[1] c_ftwall[3] v_sbot v_pbot #c_ggbot[1] c_ggbot[3] c_ggtop[1] c_ggtop[3]
 thermo        ${Nthermo}
 thermo_modify flush yes
 
