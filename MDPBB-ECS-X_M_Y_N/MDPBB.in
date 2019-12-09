@@ -35,10 +35,10 @@ print "zhi = ${zhi}"
 region        sbox block 0 ${xhi} 0 ${yhi} 0 ${zhi}
 create_box    4 sbox bond/types 3 extra/bond/per/atom 12 extra/special/per/atom 2
 
-mass          1 2.0                   # Wall atoms that are not grafted
+mass          1 1.0                   # Wall atoms that are not grafted
 mass          2 1.0                   # Grafted bead
 mass          3 1.0                   # The rest of the beads on the chain
-mass          4 2.0                   # Wall atoms that the chains are grafted to
+mass          4 1.0                   # Wall atoms that the chains are grafted to
 
 bond_style    hybrid fene harmonic    # Finitely extensible linearly elastic bond between neighbouring beads
 #bond_coeff    1 fene 30.0 1.5 0.0 0.0      # Values obtained from literature [Grest, Galushcko]
