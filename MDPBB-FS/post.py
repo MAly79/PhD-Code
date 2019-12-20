@@ -24,7 +24,7 @@ def find_lines(filename):
 
 
 def find_Ns(filename):
-    N_data = np.genfromtxt(filename, dtype=int, skip_header=10, max_rows=4)
+    N_data = np.genfromtxt(filename, dtype=int, skip_header=11, max_rows=4)
     Nequil = N_data[0,3]
     Ncomp = N_data[1,3]
     Nshear = N_data[2,3]
