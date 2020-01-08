@@ -204,7 +204,7 @@ thermo_modify flush yes
 
 #--- Dumps ---#
 #dump           eq all image ${Ndump_e} stg1.*.jpg type type zoom 2 view 60 120 bond none none
-
+dump            vis all atom ${Ndump_e} vis.dump
 
 #--- Run Equilibration ---#
 timestep    ${Tstep}
