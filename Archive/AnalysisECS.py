@@ -395,9 +395,7 @@ if __name__ == '__main__':
     l2, = ax.plot(Ds2,Is2, 'bo')
     l4, = ax.plot(Ds4,Is4, 'rs')
     l8, = ax.plot(Ds8,Is8, 'gs')
-    l16, = ax.plot(Ds16, Is16, 'bs')   
-        
-    plt.legend([l05,l1,l2,l4,l8,l16],['$f=0.5$', '$f=1$','$f=2$','$f=4$','$f=8$','$f=16$'], loc=9)
+    l16, = ax.plot(Ds16, Is16, 'bs')        
     ax.set(xlabel='$D$', ylabel= r'$I(D)$' , title='')
     ax.minorticks_on()
     plt.savefig('5-IvsD.jpg')
@@ -510,13 +508,7 @@ if __name__ == '__main__':
     
     ll1, = ax1.plot(P0151,muu1, 'rs')
     ll2, = ax1.plot(P0158,muu8, 'gs')
-    plt.legend([l1, l2, l3], ['$f=1$','$f=8$','$f=16$' ], loc=9)
-
-    
     #ll3, = ax1.plot(P01516,muu16, 'bs')
-    
-    #ll3, = ax1.plot(P01516,muu16, 'bs')
-    
 
     
     ax1.minorticks_on()
