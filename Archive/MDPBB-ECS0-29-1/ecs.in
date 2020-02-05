@@ -112,7 +112,8 @@ info coeffs
 # Computes #
 ############
 
-compute         Vir all pressure temp virial
+#compute         sysTemp   all    temp/deform                       # Calculate the temperature without translational velocities
+#compute         sysPress  all    pressure sysTemp                  # Calculate the pressure of the entire system of atoms
 compute         melTemp   abeads temp
 compute         melPress  all    pressure melTemp
 compute         wallTemp  walls  temp
@@ -136,7 +137,7 @@ group           rest_top2 subtract all twsurf
 compute         ggtop twsurf group/group rest_top
 compute         ggtop2 twsurf group/group rest_top2
 
-s
+
 #--- Calculate the applied force on each atom for the pressure applied---#
 variable Fcomp equal (${Pcomp}*lx*ly)
 variable Fcatom equal (-${Fcomp})/(count(twout))
@@ -192,9 +193,11 @@ fix_modify      lang_bbulk temp Tempyb
 fix             freeze_bout bwout setforce 0.0 0.0 0.0
 fix             freeze_tout twout setforce 0.0 0.0 0.0
 
+variable        sbot equal  f_freeze_bout[1]/(lx*ly)
+variable        pbot equal -f_freeze_bout[3]/(lx*ly)
 #--- Thermo output ---#
 
-thermo_style  custom step etotal ke pe epair temp c_melTemp c_wallTemp v_Fcatom v_Pcomp2 press pxx pyy pzz pxy pxz pyz c_Vir c_Vir[1] c_Vir[2] c_Vir[3] c_Vir[4] c_Vir[5] c_Vir[6] c_melPress c_wallPress v_melDens v_surfcov v_aveRg v_Vwall v_srate v_D v_bwzmax zhi c_fbwall[1] c_fbwall[3] c_ftwall[1] c_ftwall[3] c_ggbot[1] c_ggbot[3] c_ggtop[1] c_ggtop[3]
+thermo_style  custom step etotal ke pe epair temp c_melTemp c_wallTemp v_Fcatom v_Pcomp2 press pxx pyy pzz pxy pxz pyz c_melPress c_wallPress v_melDens v_surfcov v_aveRg v_Vwall v_srate v_D v_bwzmax zhi c_fbwall[1] c_fbwall[3] c_ftwall[1] c_ftwall[3] v_sbot v_pbot #c_ggbot[1] c_ggbot[3] c_ggtop[1] c_ggtop[3]
 thermo        ${Nthermo}
 thermo_modify flush yes
 
@@ -296,7 +299,9 @@ compute        eall all chunk/atom bin/1d z lower ${binres} units reduced
 fix            temp_prof   all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall temp file temp_sz
 #fix            temp_bias   all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall temp bias biasT file tempb_sz
 fix            vel_prof_x_s all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall vx vy file velp_sz
+#--- Ave s_bot and p_bot ---#
 
+fix             fc_ave all ave/time ${Neverys} ${Nrepeats} ${Nfreqs} v_sbot v_pbot file fc_ave.dump
 
 #--- Dumps ---#
 #dump           shear all image ${Ndump_s} stg3.*.jpg type type zoom 2 view 60 120 bond none none
