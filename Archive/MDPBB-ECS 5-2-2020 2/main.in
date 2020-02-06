@@ -16,7 +16,7 @@ variable       Nthermo   equal 1000            # Number of timesteps between the
 variable       Ndump_e   equal 10000
 variable       Ndump_c   equal 10000           # Number of timesteps per dump file (compression)
 variable       Ndump_s   equal 10000           # Number of timesteps per dump file (shear)
-variable       Vwalli    index 1          # Relative wall Velocities
+variable       Vwalli    index 0.01 0.5 1 1.5 2             # Relative wall Velocities
 variable       Pcomp     index 1 # 0.5 2 0.05 4 8                               # Compressive Pressures applied to top wall
 variable       Vscale    equal 1e-1
 
@@ -36,7 +36,6 @@ shell          cp -f ecs.rst $(v_Vwalli)_V
 shell          cp -f eq.xyz $(v_Vwalli)_V
 shell          cp -f cp.xyz $(v_Vwalli)_V
 shell          cp -f sh.xyz $(v_Vwalli)_V
-
 shell          pwd
 
 log           log.lammps

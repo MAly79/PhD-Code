@@ -56,7 +56,6 @@ variable       Nrepeats equal ${Nfreqs}/${Neverys}         # Number of times to 
 variable       binres   equal  0.001                       # Giving 1000 data points across the sim. box
 
 
-
 variable       bwzmin  equal bound(bwall,zmin)
 variable       bwzmax  equal bound(bwall,zmax)
 variable       twzmin  equal bound(twall,zmin)
@@ -113,7 +112,7 @@ info coeffs
 # Computes #
 ############
 
-compute         Vir all pressure thermo_temp virial
+compute         Vir all pressure temp virial
 compute         melTemp   abeads temp
 compute         melPress  all    pressure melTemp
 compute         wallTemp  walls  temp
@@ -137,7 +136,7 @@ group           rest_top2 subtract all twsurf
 compute         ggtop twsurf group/group rest_top
 compute         ggtop2 twsurf group/group rest_top2
 
-
+s
 #--- Calculate the applied force on each atom for the pressure applied---#
 variable Fcomp equal (${Pcomp}*lx*ly)
 variable Fcatom equal (-${Fcomp})/(count(twout))
@@ -146,8 +145,6 @@ variable Fcatom equal (-${Fcomp})/(count(twout))
 #compute	        peratom   all   stress/atom NULL
 #compute	        p_all     all   reduce sum c_peratom[1] c_peratom[2] c_peratom[3]
 #variable	      press_all equal -(c_p_all[1]+c_p_all[2]+c_p_all[3])/(3*v_volume)
-
-#--- Method of Planes for local stress tensor ---#
 
 
 
@@ -159,15 +156,12 @@ info groups variables                              # For diagnostics
 #################
 
 #--- Number Density profiles (Equil) ---#
-compute         eabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         eabeads abeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             abeads_edz abeads ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} eabeads density/number file abeads_edz
-compute         ebbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         ebbeads bbeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             bbeads_edz bbeads  ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} ebbeads density/number file bbeads_edz
-compute         etbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         etbeads tbeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             tbeads_edz tbeads  ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} etbeads density/number file tbeads_edz
-
-compute         mope all stress/mop/profile z lower $(zhi * v_binres) total
-fix mope        all ave/time ${Neverye} ${Nrepeate} ${Nfreqe} c_mope[*] ave running overwrite file mope.time mode vector
 
 #--- Radius of gyration of the bottom brush chains ---#
 compute         chunk_bot bbeads chunk/atom molecule
@@ -219,7 +213,6 @@ undump       eqxyz
 unfix abeads_edz
 unfix bbeads_edz
 unfix tbeads_edz
-unfix mope
 
 unfix freeze_tout
 
@@ -244,17 +237,15 @@ info variables
 
 #--- Computes ---#
 
-# Number density profiles and mop
+# Number density profiles
 
-compute         cabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         cabeads abeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             abeads_cdz abeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} cabeads density/number file abeads_cdz
-compute         cbbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         cbbeads bbeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             bbeads_cdz bbeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} cbbeads density/number file bbeads_cdz
-compute         ctbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         ctbeads tbeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             tbeads_cdz tbeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} ctbeads density/number file tbeads_cdz
 
-compute         mopc all stress/mop/profile z lower $(zhi * v_binres) total
-fix mopc        all ave/time ${Neveryc} ${Nrepeatc} ${Nfreqc} c_mopc[*] ave running overwrite file mopc.time mode vector
 
 
 #--- Fixes ---#
@@ -278,7 +269,6 @@ undump      cpxyz
 unfix abeads_cdz
 unfix bbeads_cdz
 unfix tbeads_cdz
-unfix mopc
 
 ###############
 # Shearing    #
@@ -293,19 +283,15 @@ velocity    bwout set -$(v_Vwall/2) 0.0 0.0  units box
 
 #--- Number Density profiles ---#
 
-compute         sabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         sabeads abeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             abeads_sdz abeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} sabeads density/number file abeads_sdz
-compute         sbbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres)  # Check bound keyword to maybe only bin melt area
+compute         sbbeads bbeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             bbeads_sdz bbeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} sbbeads density/number file bbeads_sdz
-compute         stbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         stbeads tbeads chunk/atom bin/1d z lower ${binres} units reduced # Check bound keyword to maybe only bin melt area
 fix             tbeads_sdz tbeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} stbeads density/number file tbeads_sdz
 
-compute         mops all stress/mop/profile z lower $(zhi * v_binres) total
-fix mops        all ave/time ${Neverys} ${Nrepeats} ${Nfreqs} c_mops[*] ave running overwrite file mops.time mode vector
-
-
 #--- Temperature and Velocity profiles ---#
-compute        eall all chunk/atom bin/1d z lower $(zhi * v_binres)
+compute        eall all chunk/atom bin/1d z lower ${binres} units reduced
 #compute        biasT all temp/profile 1 1 1 xyz 100 100 100
 fix            temp_prof   all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall temp file temp_sz
 #fix            temp_bias   all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall temp bias biasT file tempb_sz
