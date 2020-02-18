@@ -24,7 +24,7 @@ def find_lines(filename):
 
 
 def find_Ns(filename):
-    N_data = np.genfromtxt(filename, dtype=int, skip_header=11, max_rows=4)
+    N_data = np.genfromtxt(filename, dtype=int, skip_header=12, max_rows=4)
     Nequil = N_data[0,3]
     Ncomp = N_data[1,3]
     Nshear = N_data[2,3]
@@ -58,14 +58,14 @@ def read_chunk(filename):
                 get = np.genfromtxt(filename, dtype=float, comments='#', usecols= (3), skip_header=(4+(i+(i/Nchunks))) ,max_rows=Nchunks)
                 data = np.column_stack((data, get))
     return data
-    
+
 def read_mop(filename):
-    data= np.genfromtxt(filename, comments='#', usecols=(1,2,3,4), dtype=float, skip_header=4)   
+    data= np.genfromtxt(filename, comments='#', usecols=(1,2,3,4), dtype=float, skip_header=4)
     return data
 
 # def read_mop(filename):
 #     with open (filename,'r') as f:
-#         
+#
 #         for i, line in enumerate(f):
 #             if i ==0:
 #                 data1 - np.genfromtxt(filename, dtype=float, comments='#')
@@ -141,23 +141,23 @@ if __name__ == '__main__':
     temp_data = read_chunk('temp_sz')
     temp_df = pd.DataFrame(temp_data)
     temp_df.to_csv('temps.csv')
-    
+
     #Read in the MOP profiles and put them in csv format
-    
+
     mop_data = read_mop('mope.time')
     mop_df = pd.DataFrame(mop_data)
     mop_df.to_csv('mope.csv')
-    
+
     mop_data = read_mop('mopc.time')
     mop_df = pd.DataFrame(mop_data)
     mop_df.to_csv('mopc.csv')
-    
+
     mop_data = read_mop('mops.time')
     mop_df = pd.DataFrame(mop_data)
     mop_df.to_csv('mops.csv')
-    
-    
-    
+
+
+
 
     #Read in the velocity profile for shear
     #tempb_data = read_chunk('tempb_sz')

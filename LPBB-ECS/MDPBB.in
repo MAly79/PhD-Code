@@ -123,24 +123,24 @@ variable      rbid1 equal $(v_ntwall+ v_rchain1 * v_N)
 variable      rbid2 equal $(v_ntwall+ v_rchain2 * v_N)
 variable      rbtype1 equal type[${rbid1}]
 variable      rbtype2 equal type[${rbid2}]
-print         "rbid1 = $(v_rbid1) , rbid2 = $(v_rbid2)"
+#print         "rbid1 = $(v_rbid1) , rbid2 = $(v_rbid2)"
 
-if           "$(v_rbtype1) != 4 || $(v_rbtype2) != 4" then "jump MDPBB.in loopst"
+if            "$(v_rbtype1) != 4 || $(v_rbtype2) != 4" then "jump MDPBB.in loopst"
 # If we did not jump to the start of the loop that means that both random beads are end beads
 # Before we make any bonds we should check that we have not chosen them before
 print "The atom types are $(v_rbtype1) and $(v_rbtype2)"
 
-group      twlbc id ${rbid1} ${rbid2}      # Group of candidate end beads
-group      iftwlb union twlb twlbc
-if           "$(count(iftwlb)) != $(2*(v_i))" then "group twlbc clear" "group iftwlb clear" "jump MDPBB.in loopst"
+group         twlbc id ${rbid1} ${rbid2}      # Group of candidate end beads
+group         iftwlb union twlb twlbc
+if            "$(count(iftwlb)) != $(2*(v_i))" then "group twlbc clear" "group iftwlb clear" "jump MDPBB.in loopst"
 # If we have reached this stage this means that the two candidate end beads have not been chosen before
 # We can then safely create a FENE bond between them and add them to the twlb group
-group     iftwlb clear
-group     twlb union twlb twlbc
-group     twlbc clear
-create_bonds single/bond 2 ${rbid1} ${rbid2}
-print      "i = $(v_i)"
-print "The atom ids are ${rbid1} and ${rbid2}"
+group         iftwlb clear
+group         twlb union twlb twlbc
+group         twlbc clear
+create_bonds  single/bond 2 ${rbid1} ${rbid2}
+print         "Made top loop number $(v_i)"
+#print         "The atom ids are ${rbid1} and ${rbid2}"
 
 
 next i
@@ -204,22 +204,22 @@ variable      rbtype1 equal type[${rbid1}]
 variable      rbtype2 equal type[${rbid2}]
 #print         "Try again"
 
-if           "$(v_rbtype1) != 4 || $(v_rbtype2) != 4" then "jump MDPBB.in loopsb"
+if            "$(v_rbtype1) != 4 || $(v_rbtype2) != 4" then "jump MDPBB.in loopsb"
 # If we did not jump to the start of the loop that means that both random beads are end beads
 # Before we make any bonds we should check that we have not chosen them before
-print "The atom types are $(v_rbtype1) and $(v_rbtype2)"
+#print "The atom types are $(v_rbtype1) and $(v_rbtype2)"
 
-group      bwlbc id ${rbid1} ${rbid2}      # Group of candidate end beads (Bottom wall looped bead candidates)
-group      ifbwlb union bwlb bwlbc
-if           "$(count(ifbwlb)) != $(2*(v_j))" then "group bwlbc clear" "group ifbwlb clear" "jump MDPBB.in loopsb"
+group         bwlbc id ${rbid1} ${rbid2}      # Group of candidate end beads (Bottom wall looped bead candidates)
+group         ifbwlb union bwlb bwlbc
+if            "$(count(ifbwlb)) != $(2*(v_j))" then "group bwlbc clear" "group ifbwlb clear" "jump MDPBB.in loopsb"
 # If we have reached this stage this means that the two candidate end beads have not been chosen before
 # We can then safely create a FENE bond between them and add them to the bwlb group
-group     ifbwlb clear
-group     bwlb union bwlb bwlbc
-group     bwlbc clear
-create_bonds single/bond 2 ${rbid1} ${rbid2}
-print      "j = $(v_j)"
-print "The atom ids are ${rbid1} and ${rbid2}"
+group         ifbwlb clear
+group         bwlb union bwlb bwlbc
+group         bwlbc clear
+create_bonds  single/bond 2 ${rbid1} ${rbid2}
+print         "Made bottom loop number $(v_j)"
+#print         "The atom ids are ${rbid1} and ${rbid2}"
 
 
 next j
