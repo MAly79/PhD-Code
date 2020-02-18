@@ -111,7 +111,6 @@ jump MDPBB.in loop    # End of the loop
 
 group        twlb  empty      #Group that will contain all the top wall looped end beads
 
-if            "$L == 0" then "jump MDPBB.in skip1"
 variable      i loop $L
 label         loopst
 
@@ -143,7 +142,7 @@ print "The atom ids are ${rbid1} and ${rbid2}"
 next i
 jump MDPBB.in loopst
 
-label      skip1
+
 
 
 
@@ -188,8 +187,6 @@ jump MDPBB.in loopj
 
 group        bwlb  empty      #Group that will contain all the bot wall looped end beads
 
-if            "$L == 0" then "jump MDPBB.in skip2"
-
 variable      j loop $L
 label         loopsb
 
@@ -221,7 +218,6 @@ print "The atom ids are ${rbid1} and ${rbid2}"
 next j
 jump MDPBB.in loopsb
 
-label     skip2
 
 
 # Assign the beads to 2 different groups of grafted and non-grafted beads
