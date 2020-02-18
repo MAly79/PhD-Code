@@ -2,7 +2,7 @@
 variable      f      equal  1                  # System Size Scaling Factor
 variable      M      equal  $(v_f * 60)        # The number of polymer chains on each brush
 variable      N      string 30                 # The number of beads per chain
-variable      L      equal  30
+variable      L      equal  10
 variable      xhi    equal  $(sqrt(v_f) * 30)  # The width of the polymer Brush
 variable      yhi    equal  $(sqrt(v_f) * 30)   # The length of the polymer Brush
 variable      wthick equal  3                  # The thickness of the walls wthick=1,2,3,4 gives 2,3,4,6 layers respectively

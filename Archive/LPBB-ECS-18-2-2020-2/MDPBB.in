@@ -107,8 +107,6 @@ if            "${check1} != ${check0}" then "create_bonds  single/bond 2 ${randa
 "next i"
 jump MDPBB.in loop    # End of the loop
 
-
-
 # We must now create the loops in the brush
 
 group        twlb  empty      #Group that will contain all the top wall looped end beads
@@ -117,13 +115,12 @@ if            "$L == 0" then "jump MDPBB.in skip1"
 variable      i loop $L
 label         loopst
 
-variable      rchain1 equal round(random(1,$M,$s)) # Pick a random top end bead
-variable      rchain2 equal round(random(1,$M,$s))
-variable      rbid1 equal $(v_ntwall+ v_rchain1 * v_N)
-variable      rbid2 equal $(v_ntwall+ v_rchain2 * v_N)
+variable      rb equal round(random(${ntwall},${check},$s))  # Pick a random top bead
+variable      rbid1 equal ${rb}
+variable      rbid2 equal ${rb}
 variable      rbtype1 equal type[${rbid1}]
 variable      rbtype2 equal type[${rbid2}]
-print         "rbid1 = $(v_rbid1) , rbid2 = $(v_rbid2)"
+#print         "Try again"
 
 if           "$(v_rbtype1) != 4 || $(v_rbtype2) != 4" then "jump MDPBB.in loopst"
 # If we did not jump to the start of the loop that means that both random beads are end beads
@@ -196,10 +193,9 @@ if            "$L == 0" then "jump MDPBB.in skip2"
 variable      j loop $L
 label         loopsb
 
-variable      rchain1 equal round(random(1,$M,$s)) # Pick a random chain
-variable      rchain2 equal round(random(1,$M,$s))
-variable      rbid1 equal $(v_ntop0+v_nbwall0+ v_rchain1 * v_N)
-variable      rbid2 equal $(v_ntop0+v_nbwall0+ v_rchain2 * v_N)
+variable      rb equal round(random($(v_ntop0 + v_nbwall0),${check},$s))  # Pick a random top bead
+variable      rbid1 equal ${rb}
+variable      rbid2 equal ${rb}
 variable      rbtype1 equal type[${rbid1}]
 variable      rbtype2 equal type[${rbid2}]
 #print         "Try again"
