@@ -27,7 +27,6 @@ variable      check  equal count(all)         # The number of atoms in the syste
 variable      ntwall equal count(twall)       # The number of atoms in the top wall
 variable      nbwall equal count(bwall)       # The number of atoms in the bottom wall
 variable      s equal 234897  #45335              # Seed for the RNG
-variable      Ls equal $(round(v_L * (v_M)/2))
 
 print "zhi = ${zhi}"
 
@@ -114,8 +113,8 @@ jump MDPBB.in loop    # End of the loop
 
 group        twlb  empty      #Group that will contain all the top wall looped end beads
 
-if            "${Ls} == 0" then "jump MDPBB.in skip1"
-variable      i loop ${Ls}
+if            "$L == 0" then "jump MDPBB.in skip1"
+variable      i loop $L
 label         loopst
 
 variable      rchain1 equal round(random(1,$M,$s)) # Pick a random top end bead
@@ -192,9 +191,9 @@ jump MDPBB.in loopj
 
 group        bwlb  empty      #Group that will contain all the bot wall looped end beads
 
-if            "${Ls} == 0" then "jump MDPBB.in skip2"
+if            "$L == 0" then "jump MDPBB.in skip2"
 
-variable      j loop ${Ls}
+variable      j loop $L
 label         loopsb
 
 variable      rchain1 equal round(random(1,$M,$s)) # Pick a random chain

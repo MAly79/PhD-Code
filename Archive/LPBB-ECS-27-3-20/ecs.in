@@ -166,8 +166,8 @@ fix             bbeads_edz bbeads  ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} eb
 compute         etbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
 fix             tbeads_edz tbeads  ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} etbeads density/number file tbeads_edz
 
-#compute         mope all stress/mop/profile z lower $(zhi * v_binres) total
-#fix mope        all ave/time ${Neverye} ${Nrepeate} ${Nfreqe} c_mope[*] ave running overwrite file mope.time mode vector
+compute         mope all stress/mop/profile z lower $(zhi * v_binres) total
+fix mope        all ave/time ${Neverye} ${Nrepeate} ${Nfreqe} c_mope[*] ave running overwrite file mope.time mode vector
 
 #--- Radius of gyration of the bottom brush chains ---#
 compute         chunk_bot bbeads chunk/atom molecule
@@ -205,23 +205,21 @@ thermo        ${Nthermo}
 thermo_modify flush yes
 
 #--- Dumps ---#
-#dump           eq all image ${Nequil} stg1.*.jpg type type zoom 1.65 view 60 120 bond none none
+dump           eq all image ${Nequil} stg1.*.jpg type type zoom 1.65 view 60 120 bond none none
 dump            eqxyz all xyz ${Nequil} eq.xyz
-dump            eqatom all atom ${Ndump_e} eq.dump
 
 #--- Run Equilibration ---#
 timestep    ${Tstep}
 run         ${Nequil}
-#undump      eq
+undump      eq
 undump       eqxyz
-undump
 
 #--- Unfix Equil ---#
 
 unfix abeads_edz
 unfix bbeads_edz
 unfix tbeads_edz
-#unfix mope
+unfix mope
 
 unfix freeze_tout
 
@@ -255,8 +253,8 @@ fix             bbeads_cdz bbeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} cb
 compute         ctbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
 fix             tbeads_cdz tbeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} ctbeads density/number file tbeads_cdz
 
-#compute         mopc all stress/mop/profile z lower $(zhi * v_binres) total
-#fix mopc        all ave/time ${Neveryc} ${Nrepeatc} ${Nfreqc} c_mopc[*] ave running overwrite file mopc.time mode vector
+compute         mopc all stress/mop/profile z lower $(zhi * v_binres) total
+fix mopc        all ave/time ${Neveryc} ${Nrepeatc} ${Nfreqc} c_mopc[*] ave running overwrite file mopc.time mode vector
 
 
 #--- Fixes ---#
@@ -268,21 +266,19 @@ fix             rwalls all wall/reflect zlo EDGE zhi EDGE
 
 
 #--- Dumps ---#
-#dump           comp all image ${Ncomp} stg2.*.jpg type type zoom 1.3 view 60 120 bond none none
+dump           comp all image ${Ncomp} stg2.*.jpg type type zoom 1.3 view 60 120 bond none none
 dump            cpxyz all xyz ${Ncomp} cp.xyz
-dump            cpatom all atom ${Ndump_c} cp.dump
 
 #--- Run Compression ---#
 timestep    ${Tstep}
 run         ${Ncomp}
-#undump      comp
+undump      comp
 undump      cpxyz
-undump      cpatom
 
 unfix abeads_cdz
 unfix bbeads_cdz
 unfix tbeads_cdz
-#unfix mopc
+unfix mopc
 
 ###############
 # Shearing    #
@@ -304,8 +300,8 @@ fix             bbeads_sdz bbeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} sb
 compute         stbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
 fix             tbeads_sdz tbeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} stbeads density/number file tbeads_sdz
 
-#compute         mops all stress/mop/profile z lower $(zhi * v_binres) total
-#fix mops        all ave/time ${Neverys} ${Nrepeats} ${Nfreqs} c_mops[*] ave running overwrite file mops.time mode vector
+compute         mops all stress/mop/profile z lower $(zhi * v_binres) total
+fix mops        all ave/time ${Neverys} ${Nrepeats} ${Nfreqs} c_mops[*] ave running overwrite file mops.time mode vector
 
 
 #--- Temperature and Velocity profiles ---#
@@ -317,9 +313,8 @@ fix            vel_prof_x_s all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall 
 
 
 #--- Dumps ---#
-#dump           shear all image ${Nshear} stg3.*.jpg type type zoom 1.3 view 60 120 bond none none
+dump           shear all image ${Nshear} stg3.*.jpg type type zoom 1.3 view 60 120 bond none none
 dump            shxyz all xyz ${Nshear} sh.xyz
-dump            shatom all atom ${Ndump_s} sh.dump
 
 #--- Run Shear ---#
 timestep    ${Tstep}

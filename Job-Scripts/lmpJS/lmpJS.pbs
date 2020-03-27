@@ -7,9 +7,11 @@
 # are required
 
 # Load modules for any applications
+module load anaconda3/personal
+source activate py27
 module load intel-suite
 module load mpi
-module load python/2.7.3
+
 #module load lammps
 
 # PBS jobs start running in $HOME, so need to move it elsewhere
@@ -42,4 +44,4 @@ pbsexec mpiexec /rds/general/user/maa4617/home/lammps-7Aug19/src/lmp_mpi -l log.
 
 #cp *  $PBS_O_WORKDIR/Results
 
-cp * $PBS_O_WORKDIR
+cp -R * $PBS_O_WORKDIR
