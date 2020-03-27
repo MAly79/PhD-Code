@@ -6,6 +6,7 @@
 
 import os
 import shutil
+import glob
 
 def make_dirs(vals,name):
     for v in vals:
@@ -21,7 +22,6 @@ def run_sims(b1,b2):
 
     Ndirs = os.listdir('.')
     i = 1
-    j = 0
 
     for Ndir in Ndirs:
         if Ndir != 'LPBB-ECS':
@@ -39,14 +39,18 @@ def run_sims(b1,b2):
                                 if Pdir != 'LPBB-ECS':
                                     os.chdir(Pdir)
                                     os.chdir('LPBB-ECS')
-                                    status = 'Q'
-                                    if os.path.exists('shear.csv') == True:
-                                        j = j + 1
-                                        status = 'C'
-                                    if i <= b2 and i >= b1 and status == 'Q':
+                                    status = 'E'
+                                    #print(len(glob.glob('*JS.pbs.o*')))
+                                    if len(glob.glob('*JS.pbs.o*')) != 0:
                                         status = 'R'
+                                    if os.path.exists('shear.csv') == True:
+                                        status = 'C'
+                                    if i <= b2 and i >= b1 and status == 'E':
+                                        status = 'Q'
                                         os.system('chmod 755 BSMolf.py')
                                         os.system('qsub serJS.pbs')
+                                        #f= open("serJS.pbs.o982389","w+")
+                                        #f.close
                                     print([i,os.getcwd(),status])
                                     i = i + 1
                                     os.chdir('..')
@@ -72,5 +76,4 @@ if __name__ == '__main__':
     # for d in ./P*/LPBB-ECS; do (cd "d" && lmp -in main.in);
     # To run on cx1 I imagine something like
     # for d in ./N*/M*/L*/P*/LPBB-ECS; do (cd "d" && qsub lmpJS.pbs);
-
     run_sims(1,50)

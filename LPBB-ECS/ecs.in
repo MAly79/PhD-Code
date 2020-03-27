@@ -214,7 +214,7 @@ timestep    ${Tstep}
 run         ${Nequil}
 #undump      eq
 undump       eqxyz
-undump
+undump       eqatom
 
 #--- Unfix Equil ---#
 
