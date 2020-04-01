@@ -1,0 +1,19 @@
+Find directory Sizes
+du -hsc *
+
+Edit text document
+nano RunSims.py 
+
+Run Python Script
+./RunSims.py
+
+Modify Permissions
+chmod 755 BuildSims.py
+
+Convert format
+dos2unix RunSims.py
+
+Extract tarball
+tar -xf tarball.tar.gz
+
+
