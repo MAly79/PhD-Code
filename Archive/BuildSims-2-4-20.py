@@ -5,7 +5,6 @@
 
 import os
 import shutil
-import numpy as np
 
 def make_dirs(vals,name):
     for v in vals:
@@ -26,13 +25,6 @@ def mod_main(l,line):
     f2.close()
 
     return None
-    
-def myRg(N):
-    Rout = 0.4348*(N)**0.61
-    return Rout
-
-def myrho_c(Rg):
-    return (1)/((np.pi)*Rg**2)
 
 
 
@@ -48,10 +40,7 @@ if __name__ == '__main__':
     seriesName= 'Sims'
     shutil.copytree('LPBB-ECS',seriesName+r'/LPBB-ECS')
     os.chdir(seriesName)
-    
     Ns = [30, 90]
-
-    GDs = [0.5, 1, 1.5, 2, 4, 8]
     Ms = [30, 60, 90]
     Ls = [0,0.25,0.75,1]
     Ps = [0.0001,0.001,0.01,0.1,0.2,0.4,0.6,0.8,1.6,3.2]
@@ -67,33 +56,26 @@ if __name__ == '__main__':
             shutil.copytree('LPBB-ECS',Ndir+r'/LPBB-ECS')
 
             os.chdir(Ndir)
-            make_dirs(GDs,'GD=')
+            make_dirs(Ms,'M=')
 
             os.chdir('LPBB-ECS')
-            vN = Ndir.split("=")[1]
-            mod_main(3, 'variable      N      equal  '+vN+'\n')
+            v = Ndir.split("=")[1]
+            mod_main(3, 'variable      N      equal  '+v+'\n')
             os.chdir('..')
 
-            Gdirs = os.listdir('.')
+            Mdirs = os.listdir('.')
 
             ################################
 
-            for Gdir in Gdirs:
-                if Gdir != 'LPBB-ECS':
-                    shutil.copytree('LPBB-ECS',Gdir+r'/LPBB-ECS')
-                    os.chdir(Gdir)
+            for Mdir in Mdirs:
+                if Mdir != 'LPBB-ECS':
+                    shutil.copytree('LPBB-ECS',Mdir+r'/LPBB-ECS')
+                    os.chdir(Mdir)
                     make_dirs(Ls,'L=')
 
                     os.chdir('LPBB-ECS')
-                    vGD = Gdir.split("=")[1]
-                    Rg = myRg(float(vN))
-                    rho_c = myrho_c(Rg)
-                    GD_t = float(vGD) * rho_c
-                    A = 30*30
-                    M_tar = A * GD_t
-                    M_tar = int(round(M_tar/2))
-                    vM = str(M_tar*2)
-                    mod_main(2, 'variable      M      equal  ' +vM+'\n')
+                    v = Mdir.split("=")[1]
+                    mod_main(2, 'variable      M      equal  ' +v+'\n')
                     os.chdir('..')
 
                     Ldirs = os.listdir('.')

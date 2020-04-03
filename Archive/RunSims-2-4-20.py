@@ -47,7 +47,6 @@ def run_sims(b1,b2):
                                         status = 'C'
                                     if i <= b2 and i >= b1 and status == 'E':
                                         status = 'Q'
-                                        #print(os.getcwd())
                                         os.system('chmod 755 BSMolf.py')
                                         os.system('qsub serJS.pbs')
                                         #f= open("serJS.pbs.o982389","w+")
