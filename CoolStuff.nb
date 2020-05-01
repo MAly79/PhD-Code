@@ -1,0 +1,517 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     20214,        509]
+NotebookOptionsPosition[     18994,        479]
+NotebookOutlinePosition[     19342,        494]
+CellTagsIndexPosition[     19299,        491]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{"Grid", "[", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"a2", " ", 
+           RowBox[{"Sin", "[", 
+            RowBox[{"n2", " ", 
+             RowBox[{"(", 
+              RowBox[{"x", "+", "p2"}], ")"}]}], "]"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", "0", ",", 
+            RowBox[{"2", " ", "Pi"}]}], "}"}], ",", 
+          RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+          RowBox[{"PlotRange", "\[Rule]", "1"}]}], "]"}], ",", 
+        RowBox[{"ParametricPlot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"a1", " ", 
+             RowBox[{"Sin", "[", 
+              RowBox[{"n1", " ", 
+               RowBox[{"(", 
+                RowBox[{"x", "+", "p1"}], ")"}]}], "]"}]}], ",", 
+            RowBox[{"a2", " ", 
+             RowBox[{"Cos", "[", 
+              RowBox[{"n2", " ", 
+               RowBox[{"(", 
+                RowBox[{"x", "+", "p2"}], ")"}]}], "]"}]}]}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", "0", ",", 
+            RowBox[{"20", " ", "Pi"}]}], "}"}], ",", 
+          RowBox[{"PlotRange", "\[Rule]", "1"}], ",", 
+          RowBox[{"PerformanceGoal", "\[Rule]", "\"\<Quality\>\""}]}], 
+         "]"}]}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"Null", ",", 
+        RowBox[{"ParametricPlot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"a1", " ", 
+             RowBox[{"Sin", "[", 
+              RowBox[{"n1", " ", 
+               RowBox[{"(", 
+                RowBox[{"x", "+", "p1"}], ")"}]}], "]"}]}], ",", "x"}], "}"}],
+           ",", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", "0", ",", 
+            RowBox[{"2", " ", "Pi"}]}], "}"}], ",", 
+          RowBox[{"AspectRatio", "\[Rule]", "1"}], ",", 
+          RowBox[{"PlotRange", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"-", "1"}], ",", "1"}], "}"}], ",", 
+             RowBox[{"{", 
+              RowBox[{"0", ",", 
+               RowBox[{"2", " ", "Pi"}]}], "}"}]}], "}"}]}]}], "]"}]}], 
+       "}"}]}], "}"}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n1", ",", "1", ",", "\"\<Frequency\>\""}], "}"}], ",", "1", 
+     ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a1", ",", "1", ",", "\"\<Amplitude\>\""}], "}"}], ",", "0", 
+     ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"p1", ",", "0", ",", "\"\<Phase\>\""}], "}"}], ",", "0", ",", 
+     RowBox[{"2", " ", "Pi"}]}], "}"}], ",", "Delimiter", ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n2", ",", 
+       RowBox[{"5", "/", "4"}], ",", "\"\<Frequency\>\""}], "}"}], ",", "1", 
+     ",", "4"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a2", ",", "1", ",", "\"\<Amplitude\>\""}], "}"}], ",", "0", 
+     ",", "1"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"p2", ",", "0", ",", "\"\<Phase\>\""}], "}"}], ",", "0", ",", 
+     RowBox[{"2", " ", "Pi"}]}], "}"}], ",", 
+   RowBox[{"ControlPlacement", "\[Rule]", "Left"}]}], "]"}]], "Input",Expressi\
+onUUID->"49bf6dde-2814-4e47-a50b-39ea8424ee52"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`a1$$ = 0.902, $CellContext`a2$$ = 
+    1, $CellContext`n1$$ = 1, $CellContext`n2$$ = Rational[
+    5, 4], $CellContext`p1$$ = 0, $CellContext`p2$$ = 0, Typeset`show$$ = 
+    True, Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`n1$$], 1, "Frequency"}, 1, 4}, {{
+       Hold[$CellContext`a1$$], 1, "Amplitude"}, 0, 1}, {{
+       Hold[$CellContext`p1$$], 0, "Phase"}, 0, 2 Pi}, {{
+       Hold[$CellContext`n2$$], 
+       Rational[5, 4], "Frequency"}, 1, 4}, {{
+       Hold[$CellContext`a2$$], 1, "Amplitude"}, 0, 1}, {{
+       Hold[$CellContext`p2$$], 0, "Phase"}, 0, 2 Pi}}, Typeset`size$$ = {
+    369., {176.5, 182.5}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, $CellContext`n1$14164$$ = 
+    0, $CellContext`a1$14165$$ = 0, $CellContext`p1$14166$$ = 
+    0, $CellContext`n2$14167$$ = 0, $CellContext`a2$14168$$ = 
+    0, $CellContext`p2$14169$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`a1$$ = 1, $CellContext`a2$$ = 
+        1, $CellContext`n1$$ = 1, $CellContext`n2$$ = 
+        Rational[5, 4], $CellContext`p1$$ = 0, $CellContext`p2$$ = 0}, 
+      "ControllerVariables" :> {
+        Hold[$CellContext`n1$$, $CellContext`n1$14164$$, 0], 
+        Hold[$CellContext`a1$$, $CellContext`a1$14165$$, 0], 
+        Hold[$CellContext`p1$$, $CellContext`p1$14166$$, 0], 
+        Hold[$CellContext`n2$$, $CellContext`n2$14167$$, 0], 
+        Hold[$CellContext`a2$$, $CellContext`a2$14168$$, 0], 
+        Hold[$CellContext`p2$$, $CellContext`p2$14169$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> Grid[{{
+          
+          Plot[$CellContext`a2$$ 
+           Sin[$CellContext`n2$$ ($CellContext`x + $CellContext`p2$$)], \
+{$CellContext`x, 0, 2 Pi}, AspectRatio -> 1, PlotRange -> 1], 
+          
+          ParametricPlot[{$CellContext`a1$$ 
+            Sin[$CellContext`n1$$ ($CellContext`x + $CellContext`p1$$)], \
+$CellContext`a2$$ 
+            Cos[$CellContext`n2$$ ($CellContext`x + $CellContext`p2$$)]}, \
+{$CellContext`x, 0, 20 Pi}, PlotRange -> 1, PerformanceGoal -> "Quality"]}, {
+         Null, 
+          
+          ParametricPlot[{$CellContext`a1$$ 
+            Sin[$CellContext`n1$$ ($CellContext`x + $CellContext`p1$$)], \
+$CellContext`x}, {$CellContext`x, 0, 2 Pi}, AspectRatio -> 1, 
+           PlotRange -> {{-1, 1}, {0, 2 Pi}}]}}], 
+      "Specifications" :> {{{$CellContext`n1$$, 1, "Frequency"}, 1, 
+         4}, {{$CellContext`a1$$, 1, "Amplitude"}, 0, 
+         1}, {{$CellContext`p1$$, 0, "Phase"}, 0, 2 Pi}, 
+        Delimiter, {{$CellContext`n2$$, 
+          Rational[5, 4], "Frequency"}, 1, 
+         4}, {{$CellContext`a2$$, 1, "Amplitude"}, 0, 
+         1}, {{$CellContext`p2$$, 0, "Phase"}, 0, 2 Pi}}, 
+      "Options" :> {ControlPlacement -> Left}, "DefaultOptions" :> {}],
+     ImageSizeCache->{695., {209., 215.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.7971848725785446`*^9},ExpressionUUID->"0783b9fe-c302-40d4-99ea-\
+f8abb681e31c"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"expansion", "=", 
+     RowBox[{"Normal", "[", "\[IndentingNewLine]", 
+      RowBox[{"Series", "[", "\[IndentingNewLine]", 
+       RowBox[{"func", ",", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", "a", ",", "n"}], "}"}]}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Plot", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"func", ",", "expansion"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", 
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "Pi"}], ",", 
+          RowBox[{"2", " ", "Pi"}]}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"PlotRange", "->", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"-", "2"}], " ", "Pi"}], ",", 
+             RowBox[{"2", " ", "Pi"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"yMin", ",", "yMax"}], "}"}]}], "}"}]}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Expand", "[", "expansion", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"n", " ", "\"\<degree polynomial around the point x=\>\""}], 
+      ",", "a"}], "}"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n", ",", "3"}], "}"}], ",", "1", ",", "25", ",", "1"}], "}"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{"func", ",", 
+      RowBox[{"Sin", "[", "x", "]"}], ",", "\"\<Function in terms of x\>\""}],
+      "}"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", ",", "0"}], "}"}], ",", 
+     RowBox[{"-", "5"}], ",", "5"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"yMin", ",", 
+     RowBox[{"-", "4"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"yMax", ",", "4"}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.7971980497106457`*^9, 3.7971980601171393`*^9}, {
+  3.7971981424089036`*^9, 
+  3.797198211070798*^9}},ExpressionUUID->"1ca0bff2-321b-47f8-a275-\
+651ced703546"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`a$$ = 
+    1.2800000000000002`, $CellContext`func$$ = 
+    Sin[$CellContext`x], $CellContext`n$$ = 3, $CellContext`yMax$$ = 
+    4, $CellContext`yMin$$ = -4, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`n$$], 3}, 1, 25, 1}, {{
+       Hold[$CellContext`func$$], 
+       Sin[$CellContext`x], "Function in terms of x"}}, {{
+       Hold[$CellContext`a$$], 0}, -5, 5}, {
+      Hold[$CellContext`yMin$$], -4}, {
+      Hold[$CellContext`yMax$$], 4}}, Typeset`size$$ = {698., {256., 220.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`n$4329$$ = 0, $CellContext`a$4330$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`a$$ = 0, $CellContext`func$$ = 
+        Sin[$CellContext`x], $CellContext`n$$ = 3, $CellContext`yMax$$ = 
+        4, $CellContext`yMin$$ = -4}, "ControllerVariables" :> {
+        Hold[$CellContext`n$$, $CellContext`n$4329$$, 0], 
+        Hold[$CellContext`a$$, $CellContext`a$4330$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`expansion = Normal[
+          
+          Series[$CellContext`func$$, {$CellContext`x, $CellContext`a$$, \
+$CellContext`n$$}]]; {
+         Plot[{$CellContext`func$$, $CellContext`expansion}, {$CellContext`x, \
+(-2) Pi, 2 Pi}, 
+          PlotRange -> {{(-2) Pi, 2 
+             Pi}, {$CellContext`yMin$$, $CellContext`yMax$$}}], 
+         Expand[$CellContext`expansion], $CellContext`n$$ 
+         "degree polynomial around the point x=", $CellContext`a$$}), 
+      "Specifications" :> {{{$CellContext`n$$, 3}, 1, 25, 
+         1}, {{$CellContext`func$$, 
+          Sin[$CellContext`x], "Function in terms of x"}}, {{$CellContext`a$$,
+           0}, -5, 5}, {$CellContext`yMin$$, -4}, {$CellContext`yMax$$, 4}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{749., {328., 334.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellOpen->False,
+ CellChangeTimes->{
+  3.7971980612261467`*^9},ExpressionUUID->"4319df57-343b-4ff5-8d1a-\
+0e50bfdb3570"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{{3.7971983381183195`*^9, 
+  3.7971983393404303`*^9}},ExpressionUUID->"61eaba7d-8895-48b8-8826-\
+39fdc514a5c8"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData["expansion"], "Input",
+ CellChangeTimes->{{3.7971983435972967`*^9, 
+  3.7971983467701797`*^9}},ExpressionUUID->"1e884d7d-587a-4248-bd41-\
+dbb30d457a3e"],
+
+Cell[BoxData[
+ RowBox[{"0.958015860289225`", "\[VeryThinSpace]", "+", 
+  RowBox[{"0.2867152096319553`", " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "1.2800000000000002`"}], "+", "x"}], ")"}]}], "-", 
+  RowBox[{"0.4790079301446125`", " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1.2800000000000002`"}], "+", "x"}], ")"}], "2"]}], "-", 
+  RowBox[{"0.04778586827199255`", " ", 
+   SuperscriptBox[
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "1.2800000000000002`"}], "+", "x"}], ")"}], 
+    "3"]}]}]], "Output",
+ CellChangeTimes->{
+  3.7971983484617167`*^9},ExpressionUUID->"edf07c59-65ab-4f41-bde4-\
+5ecf6cf976de"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"expansion", "=", 
+     RowBox[{"Normal", "[", "\[IndentingNewLine]", 
+      RowBox[{"Series", "[", "\[IndentingNewLine]", 
+       RowBox[{"func", ",", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", "a", ",", "n"}], "}"}]}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"Plot", "[", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"func", ",", "expansion"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"{", 
+         RowBox[{"x", ",", 
+          RowBox[{
+           RowBox[{"-", "2"}], " ", "Pi"}], ",", 
+          RowBox[{"2", " ", "Pi"}]}], "}"}], ",", "\[IndentingNewLine]", 
+        RowBox[{"PlotRange", "->", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"-", "2"}], " ", "Pi"}], ",", 
+             RowBox[{"2", " ", "Pi"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"yMin", ",", "yMax"}], "}"}]}], "}"}]}]}], "]"}], ",", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Expand", "[", "expansion", "]"}], ",", "\[IndentingNewLine]", 
+      RowBox[{"n", " ", "\"\<degree polynomial around the point x=\>\""}], 
+      ",", "a"}], "}"}]}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"n", ",", "3"}], "}"}], ",", "1", ",", "25", ",", "1"}], "}"}], 
+   ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"{", 
+     RowBox[{"func", ",", 
+      RowBox[{"Sin", "[", "x", "]"}], ",", "\"\<Function in terms of x\>\""}],
+      "}"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"a", ",", "0"}], "}"}], ",", 
+     RowBox[{"-", "5"}], ",", "5"}], "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{"yMin", ",", 
+     RowBox[{"-", "4"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"yMax", ",", "4"}], "}"}]}], "]"}]], "Input",ExpressionUUID->\
+"54b21494-f6ef-4748-a266-2a39577a45b9"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`a$$ = 0, $CellContext`func$$ = 
+    Sin[$CellContext`x], $CellContext`n$$ = 3, $CellContext`yMax$$ = 
+    4, $CellContext`yMin$$ = -4, Typeset`show$$ = True, 
+    Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`n$$], 3}, 1, 25, 1}, {{
+       Hold[$CellContext`func$$], 
+       Sin[$CellContext`x], "Function in terms of x"}}, {{
+       Hold[$CellContext`a$$], 0}, -5, 5}, {
+      Hold[$CellContext`yMin$$], -4}, {
+      Hold[$CellContext`yMax$$], 4}}, Typeset`size$$ = {783.2, {134., 139.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = 
+    True, $CellContext`n$370238$$ = 0, $CellContext`a$370239$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`a$$ = 0, $CellContext`func$$ = 
+        Sin[$CellContext`x], $CellContext`n$$ = 3, $CellContext`yMax$$ = 
+        4, $CellContext`yMin$$ = -4}, "ControllerVariables" :> {
+        Hold[$CellContext`n$$, $CellContext`n$370238$$, 0], 
+        Hold[$CellContext`a$$, $CellContext`a$370239$$, 0]}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, "Body" :> ($CellContext`expansion = Normal[
+          
+          Series[$CellContext`func$$, {$CellContext`x, $CellContext`a$$, \
+$CellContext`n$$}]]; {
+         Plot[{$CellContext`func$$, $CellContext`expansion}, {$CellContext`x, \
+(-2) Pi, 2 Pi}, 
+          PlotRange -> {{(-2) Pi, 2 
+             Pi}, {$CellContext`yMin$$, $CellContext`yMax$$}}], 
+         Expand[$CellContext`expansion], $CellContext`n$$ 
+         "degree polynomial around the point x=", $CellContext`a$$}), 
+      "Specifications" :> {{{$CellContext`n$$, 3}, 1, 25, 
+         1}, {{$CellContext`func$$, 
+          Sin[$CellContext`x], "Function in terms of x"}}, {{$CellContext`a$$,
+           0}, -5, 5}, {$CellContext`yMin$$, -4}, {$CellContext`yMax$$, 4}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{835., {227., 233.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.797199695049694*^9},ExpressionUUID->"a9d05b50-824c-4a6a-8471-\
+c66d68ed3463"]
+}, Open  ]]
+},
+WindowSize->{1278, 1348},
+WindowMargins->{{Automatic, -7}, {Automatic, 0}},
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (September 10, 2017)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 3450, 98, 143, "Input",ExpressionUUID->"49bf6dde-2814-4e47-a50b-39ea8424ee52"],
+Cell[4033, 122, 3797, 75, 443, "Output",ExpressionUUID->"0783b9fe-c302-40d4-99ea-f8abb681e31c"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7867, 202, 2231, 60, 276, "Input",ExpressionUUID->"1ca0bff2-321b-47f8-a275-651ced703546"],
+Cell[10101, 264, 2870, 58, 19, "Output",ExpressionUUID->"4319df57-343b-4ff5-8d1a-0e50bfdb3570",
+ CellOpen->False]
+}, Open  ]],
+Cell[12986, 325, 156, 3, 28, "Input",ExpressionUUID->"61eaba7d-8895-48b8-8826-39fdc514a5c8"],
+Cell[CellGroupData[{
+Cell[13167, 332, 165, 3, 28, "Input",ExpressionUUID->"1e884d7d-587a-4248-bd41-dbb30d457a3e"],
+Cell[13335, 337, 660, 19, 32, "Output",ExpressionUUID->"edf07c59-65ab-4f41-bde4-5ecf6cf976de"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14032, 361, 2107, 57, 276, "Input",ExpressionUUID->"54b21494-f6ef-4748-a266-2a39577a45b9"],
+Cell[16142, 420, 2836, 56, 479, "Output",ExpressionUUID->"a9d05b50-824c-4a6a-8471-c66d68ed3463"]
+}, Open  ]]
+}
+]
+*)
+

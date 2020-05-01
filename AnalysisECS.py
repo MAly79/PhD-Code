@@ -322,26 +322,24 @@ def read_Rg(path):
     
     
     
-# def IvsD(path):
-#     ocwd = os.getcwd()
-#     os.chdir(path)
-#     dirs = filter(os.path.isdir ,os.listdir('.'))
-#     n = len(dirs)
-#     Ps = np.zeros(n)
-#     Is = np.zeros(n)
-#     Ds = np.zeros(n)
-#     i=0
-#     for dir in dirs:  
-#         S = dir.split("_")
-#         Ps[i] = float(S[0])
-#         c = os.path.join('.',dir)
-#         zZDa,zZDt,zZDb,zZVp,zZTp,zZPp,Is[i],Ds[i] = zZ_profs(c,2)
-#         i = i + 1 
-#     Ps,Is,Ds = zip(*sorted(zip(Ps,Is,Ds)))
-#     os.chdir(ocwd)
-#     return Ps,Is,Ds
-#     
-#     
+def read_RDF(txt):
+    ocwd = os.getcwd()
+    data = np.genfromtxt(txt,comments='#', dtype=float)
+    print(data.shape)
+    m,n = data.shape
+    print(m)
+    print(n)
+    r = np.zeros(m)
+    g =  np.zeros((m,n-1))
+    
+    for i in range(m):
+        r[i] = data[i][0]
+        g[i,:] = data[i][1:]
+        
+    os.chdir(ocwd)
+    return r,g
+    
+    
 
 if __name__ == '__main__':
     
@@ -351,6 +349,21 @@ if __name__ == '__main__':
   
     print('Analysis')
     
+#    #---RDF from Ovito---#
+#    
+#    r,g = read_RDF('beq')
+#    
+#    print(r)
+#    print(g[:,1])
+#    
+#    plt.rcParams.update({'font.size': 15})
+#    fig, ax = plt.subplots(figsize=(10,8))
+#    l1, = ax.plot(r , g[:,3], 'g-')
+#    plt.legend([l1], [r'$3-3$'], loc=1)
+#    ax.set(xlabel='$r$', ylabel= r'$g(r)$' , title='')
+#    ax.minorticks_on()
+#    plt.savefig('1-RDF.jpg')      
+#    
 #     
 #     #---FreeChain---#
 #     Ns,Rgs,Rge = read_Rg(r'C:\Users\klay_\OneDrive - Imperial College London\PhD\PhD-Sims\CompSims\Isolated Chain')

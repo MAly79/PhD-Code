@@ -1,5 +1,5 @@
-# This is a python script that reads LAMMPS output files for LPBB-ECS
-# And then writes them to .csv files
+# This is a python script that will generate a LAMMPS molecule file for use in
+# Polymer Brush
 import numpy as np
 import pandas as pd
 import os
@@ -13,6 +13,15 @@ def find_lines(filename):
             if ('Step TotEng' in line[:11]):
                 start.append(n)
     return start
+
+#def find_line(filename,sprompt):
+#    with open(filename,'r') as f:
+#        for n, line in enumerate(f):
+#            #if line[:8] == sprompt:
+#            if (str(sprompt) in line[:10]):
+#                start = n
+#    return start
+
 
 def find_Ns(filename):
     N_data = np.genfromtxt(filename, dtype=int, skip_header=12, max_rows=4)
@@ -28,11 +37,20 @@ def file_len(fname):
             pass
     return i
 
+#def read_thermo(filename,tstart,Nrun,Ntherm):
+#    trows = int(Nrun/Ntherm)
+#    print(trows)
+#    thermo_data = np.genfromtxt(filename,comments=None, dtype=float, skip_header=tstart+2, max_rows=trows+1)
+#    return thermo_data
+
 def read_chunk(filename):
     with open(filename,'r') as f:
         c_info = np.genfromtxt(filename,comments='#', dtype=float, max_rows=1)
         Nchunks = int(c_info[1])
         lines = file_len(filename)
+        #print(Nchunks)
+        #print(lines)
+        #data = lines
         for i, line in enumerate(f):
             if i == 0:
                 data =  np.genfromtxt(filename, dtype=float, comments='#', usecols= (1,3), skip_header=(4+(i+(i/Nchunks))) ,max_rows=Nchunks)
@@ -45,6 +63,15 @@ def read_mop(filename):
     data= np.genfromtxt(filename, comments='#', usecols=(1,2,3,4), dtype=float, skip_header=4)
     return data
 
+# def read_mop(filename):
+#     with open (filename,'r') as f:
+#
+#         for i, line in enumerate(f):
+#             if i ==0:
+#                 data1 - np.genfromtxt(filename, dtype=float, comments='#')
+#             else:
+#                 data = np.genfromtxt(filename, comments='#', dtype=float, skip_header=2)
+#     return data
 
 if __name__ == '__main__':
     Nequil, Ncomp, Nshear, Nthermo = find_Ns('main.in')
@@ -114,3 +141,25 @@ if __name__ == '__main__':
     temp_data = read_chunk('temp_sz')
     temp_df = pd.DataFrame(temp_data)
     temp_df.to_csv('temps.csv')
+
+    #Read in the MOP profiles and put them in csv format
+
+    mop_data = read_mop('mope.time')
+    mop_df = pd.DataFrame(mop_data)
+    mop_df.to_csv('mope.csv')
+
+    mop_data = read_mop('mopc.time')
+    mop_df = pd.DataFrame(mop_data)
+    mop_df.to_csv('mopc.csv')
+
+    mop_data = read_mop('mops.time')
+    mop_df = pd.DataFrame(mop_data)
+    mop_df.to_csv('mops.csv')
+
+
+
+
+    #Read in the velocity profile for shear
+    #tempb_data = read_chunk('tempb_sz')
+    #tempb_df = pd.DataFrame(tempb_data)
+    #tempb_df.to_csv('tempbs.csv')

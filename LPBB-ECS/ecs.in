@@ -1,6 +1,5 @@
-# This is an input script that creates a mono disperse polymer brush bilayer
-# A coarse grained bead-spring model is used for the polymers which are end
-# grafted to the surfaces of 2 opposing FCC walls at random sites.
+# This is an input script that performs equilibrion, compression and shearing
+# Simulations on the Polymer Brush Bilayer read from MDPBB.rst
 
 clear
 
@@ -12,34 +11,22 @@ reset_timestep  0
 
 #--- Redefine the bond coeffs ---#
 
-bond_coeff    1 fene 30.0 1.5 0.0 0.0      # Values obtained from literature [Grest, Galushcko]
-bond_coeff    2 fene 30.0 1.5 0.0 0.0       # This is the grafting bond between the polymer and the wall atom
-bond_coeff    3 harmonic 800.0 $(1.5874 * sqrt(2)/2)
+bond_coeff    1 fene 30.0 1.5 1.0 1.0                # (K, Rmax) for FENE and (sigma, epsilon) for LJ
+bond_coeff    2 harmonic 800.0 $(1.5874 * sqrt(2)/2) # (K,ro) ro is the equilibrium distance
 
-neigh_modify   every 1 delay 0 check yes
+neigh_modify   every 1 delay 10 check yes             # These are default values
 
 #--- Define variables ---#
 
 # for dimensional values: eps = 4.14e-21 J at T = 300K and sigma = 0.5nm
 
-#--- Moved to main.in ---#
-#variable       Temp       equal ${Tstr} #[Grest96]
-#variable       Tstep     equal 0.005                       # Timestep in Tau (default = 0.005)
-#variable       Nequil    equal 10000                       # Number of timesteps to equilibrate
-#variable       Ncomp     equal 200000                      # Number of timesteps to compress - until no more occilation of walls
-#variable       Nshear    equal 1000000                     # Number of timesteps to shear - use approx 4ns for 10m/s
-#variable       Nthermo   equal 1000                        # Number of timesteps between thermo data prints
-#variable       Ndump_e   equal 10000
-#variable       Ndump_c   equal 10000                       # Number of timesteps per dump file (compression)
-#variable       Ndump_s   equal 10000                       # Number of timesteps per dump file (shear)
-#variable       Pcomp     equal 1
 variable        Pcomp2    equal ${Pcomp}
-variable        Vwall     equal $(v_Vwalli * v_Vscale)
+variable        Vwall     equal ${Vwalli}
 
 # For Equilibration - density profiles (10 for entire run)
 variable       Nfreqe   equal ${Nequil}/10                  # Calculate bin averages every this many timesteps
 variable       Neverye  equal 100                           # Use input values every this many timesteps
-variable       Nrepeate equal ${Nfreqe}/${Neverye}          #s Number of times to use input values
+variable       Nrepeate equal ${Nfreqe}/${Neverye}          # Number of times to use input values
 
 
 # For compression - density profiles (10 for entire run)
@@ -48,7 +35,7 @@ variable       Neveryc  equal 100                          # Use input values ev
 variable       Nrepeatc equal ${Nfreqc}/${Neveryc}         # Number of times to use input values
 
 # For Shear - density profiles (10 for entire run)
-variable       Nfreqs   equal ${Nshear}/10                  # Calculate bin averages every this many timesteps
+variable       Nfreqs   equal ${Nshear}/10                 # Calculate bin averages every this many timesteps
 variable       Neverys  equal 100                          # Use input values every this many timesteps
 variable       Nrepeats equal ${Nfreqs}/${Neverys}         # Number of times to use input values
 
@@ -57,76 +44,63 @@ variable       binres   equal  0.001                       # Giving 1000 data po
 
 
 
-variable       bwzmin  equal bound(bwall,zmin)
-variable       bwzmax  equal bound(bwall,zmax)
-variable       twzmin  equal bound(twall,zmin)
-variable       twzmax  equal bound(twall,zmax)
-variable       c       equal count(gbeads)
-variable       surfcov equal $(v_M/(lx*ly))
-variable       D       equal v_twzmin-v_bwzmax
-variable       Dout    equal v_twzmax-v_bwzmin
-variable       srate   equal (v_Vwall/v_D)
+variable       bwzmin  equal bound(bwall,zmin)             # Bottom wall zmin
+variable       bwzmax  equal bound(bwall,zmax)             # Bottom wall zmax
+variable       twzmin  equal bound(twall,zmin)             # Top wall zmin
+variable       twzmax  equal bound(twall,zmax)             # Top Wall zmax
+variable       surfcov equal $(v_M/(lx*ly))                # Calculate the surface coverage (Grafting Density)
+variable       D       equal v_twzmin-v_bwzmax             # Calculate the Wall Seperation Distace
+variable       Dout    equal v_twzmax-v_bwzmin             # Calculate outer wall seperation distance
+variable       srate   equal (v_Vwall/v_D)                 # Calculate the shear rate
 
 
 #--- Define regions and groups ---#
 
-print        "bwzmin = ${bwzmin}"
-print        "bwzmax = ${bwzmax}"
-print        "twzmin = ${twzmin}"
-print        "twzmax = ${twzmax}"
+region         bwallb  block  INF INF INF INF ${bwzmin} $(v_bwzmin + 0.4) units box           # Bottom wall bottom layer
+region         bwallm  block  INF INF INF INF $(v_bwzmin + 0.35) $(v_bwzmax - 0.35) units box # Bottom wall bulk layers
+region         bwallt  block  INF INF INF INF $(v_bwzmax - 0.7) $(v_bwzmax) units box         # Bottom wall top layer
+region         bmelt   block  INF INF INF INF $(v_bwzmax) $(v_twzmax / 2) units box           # Bottom half of melt region
+region         tmelt   block  INF INF INF INF $(v_twzmax / 2)  $(v_twzmin - 0.1) units box    # Top half of melt region
+region         twallb  block  INF INF INF INF $(v_twzmin - 0.1) $(v_twzmin + 0.35) units box  # Top wall bottom layer
+region         twallm  block  INF INF INF INF $(v_twzmin + 0.35) $(v_twzmax - 0.35) units box # Top wall bulk layers
+region         twallt  block  INF INF INF INF $(v_twzmax - 0.35) $(v_twzmax) units box        # Top wall top layer
 
-region         bwallb  block  INF INF INF INF ${bwzmin} $(v_bwzmin + 0.4) units box
-region         bwallm  block  INF INF INF INF $(v_bwzmin + 0.35) $(v_bwzmax - 0.35) units box
-region         bwallt  block  INF INF INF INF $(v_bwzmax - 0.7) $(v_bwzmax) units box
-region         bmelt   block  INF INF INF INF $(v_bwzmax) $(v_twzmax / 2) units box
-region         tmelt   block  INF INF INF INF $(v_twzmax / 2)  $(v_twzmin - 0.1) units box
-region         twallb  block  INF INF INF INF $(v_twzmin - 0.1) $(v_twzmin + 0.35) units box
-region         twallm  block  INF INF INF INF $(v_twzmin + 0.35) $(v_twzmax - 0.35) units box
-region         twallt  block  INF INF INF INF $(v_twzmax - 0.35) $(v_twzmax) units box
-
-group          bwsurf  region bwallt
-group          bwbulk  region bwallm
-group          bwout   region bwallb
-group          bbeads  region bmelt
-group          tbeads  region tmelt
-group          abeads  union  bbeads tbeads
-group          twsurf  region twallb
-group          twbulk  region twallm
-group          twout   region twallt
-group          rest4bot union abeads twall
-group          rest4top union abeads bwall
-group          walls    union bwall twall
-group          alltop   union twall tbeads
-# Other groups are: gbeads fbeads bwall twall
+group          bwsurf  region bwallt                # group of Bottom Wall Inner atoms
+group          bwbulk  region bwallm                # group of Bottom wall bulk atoms
+group          bwout   region bwallb                # group of Bottom wall Outer atoms
+group          bbeads  region bmelt                 # group of bottom beads
+group          tbeads  region tmelt                 # group of top beads
+group          abeads  union  bbeads tbeads         # group of all beads
+group          twsurf  region twallb                # group of Top wall Inner atoms
+group          twbulk  region twallm                # group of Top wall bulk atoms
+group          twout   region twallt                # group of Top wall Outer atoms
+group          rest4bot union abeads twall          # for use with group/group computes
+group          rest4top union abeads bwall          # for use with group/group computes
+group          walls    union bwall twall           # group of all wall atoms
+group          alltop   union twall tbeads          # group of all top atoms
+# Other groups are: gbeads ebeads fbeads bwall twall
 
 info system
 info coeffs
-
-#--- Exclude wall-wall interactions ---#
-
-#neigh_modify exclude type 1 1
-#neigh_modify exclude type 1 4
-#neigh_modify exclude type 4 4
-
 
 ############
 # Computes #
 ############
 
-compute         Vir all pressure thermo_temp virial
-compute         melTemp   abeads temp
-compute         melPress  all    pressure melTemp
-compute         wallTemp  walls  temp
-compute         wallPress all    pressure wallTemp
-variable        melDens   equal  $(mass(abeads))/(lx*ly*v_D)
+compute         Vir all pressure thermo_temp virial  # Computes the Virial Stress tensor for the entire simulation box
+compute         melTemp   abeads temp                # Computes the temp of just the melt
+compute         melPress  all    pressure melTemp    # Computes the melt pressure
+compute         wallTemp  walls  temp                # Computes Wall tempterature
+compute         wallPress all    pressure wallTemp   # Computes wall pressure
+variable        melDens   equal  $(mass(abeads))/(lx*ly*v_D) # Calculate the melt density
 
 #--- Forces and Energies ---#
 
+# Group/Group computes to try and calculate the forces on walls
 compute         fbwall  bwall group/group rest4bot
 compute         ftwall  twall group/group rest4top
 compute         fwalls  bwall group/group twall
 
-#--- Like done in comp_shear.in ---#
 group           rest_bot union abeads bwall
 group           rest_bot2 subtract all bwsurf
 compute         ggbot bwsurf group/group rest_bot
@@ -139,16 +113,8 @@ compute         ggtop2 twsurf group/group rest_top2
 
 
 #--- Calculate the applied force on each atom for the pressure applied---#
-variable Fcomp equal (${Pcomp}*lx*ly)
-variable Fcatom equal (-${Fcomp})/(count(twout))
-
-
-#compute	        peratom   all   stress/atom NULL
-#compute	        p_all     all   reduce sum c_peratom[1] c_peratom[2] c_peratom[3]
-#variable	      press_all equal -(c_p_all[1]+c_p_all[2]+c_p_all[3])/(3*v_volume)
-
-#--- Method of Planes for local stress tensor ---#
-
+variable Fcomp equal (${Pcomp}*lx*ly)              # This is the force that should be applied to the top face during compression
+variable Fcatom equal (-${Fcomp})/(count(twout))   # This is the per atom force than need to be applied to the top face
 
 
 info groups variables                              # For diagnostics
@@ -159,24 +125,22 @@ info groups variables                              # For diagnostics
 #################
 
 #--- Number Density profiles (Equil) ---#
-compute         eabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         eabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             abeads_edz abeads ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} eabeads density/number file abeads_edz
-compute         ebbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         ebbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             bbeads_edz bbeads  ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} ebbeads density/number file bbeads_edz
-compute         etbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         etbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             tbeads_edz tbeads  ave/chunk ${Neverye} ${Nrepeate} ${Nfreqe} etbeads density/number file tbeads_edz
 
-#compute         mope all stress/mop/profile z lower $(zhi * v_binres) total
-#fix mope        all ave/time ${Neverye} ${Nrepeate} ${Nfreqe} c_mope[*] ave running overwrite file mope.time mode vector
-
 #--- Radius of gyration of the bottom brush chains ---#
-compute         chunk_bot bbeads chunk/atom molecule
-compute         rgbbeads bbeads gyration/chunk chunk_bot
-variable        aveRg    equal  (ave(c_rgbbeads))
+compute         chunk_bot bbeads chunk/atom molecule         # Creates a chunkID for each molecule
+compute         rgbbeads bbeads gyration/chunk chunk_bot     # Calculates the radius of gyration of each molecule into a vector
+variable        aveRg    equal  (ave(c_rgbbeads))            # Average the vector values into a single value to ouput in thermo
 
 
 #--- Fixes (Equil) ---#
 
+# Apply a velocity distribution to the molecules
 #velocity       abeads create ${Temp} 290842 dist gaussian
 #fix             nvt_melt    abeads nvt temp ${Temp} ${Temp} 100.0
 
@@ -205,23 +169,20 @@ thermo        ${Nthermo}
 thermo_modify flush yes
 
 #--- Dumps ---#
-#dump           eq all image ${Nequil} stg1.*.jpg type type zoom 1.65 view 60 120 bond none none
-dump            eqxyz all xyz ${Nequil} eq.xyz
-dump            eqatom all atom ${Ndump_e} eq.dump
 
+dump            fulleq all custom ${Ndump_e} full_eq.dump id type xs ys zs mol
+dump            beadseq bbeads custom ${Ndump_e} beads_eq.dump id type xs ys zs mol
 #--- Run Equilibration ---#
 timestep    ${Tstep}
 run         ${Nequil}
-#undump      eq
-undump       eqxyz
-undump       eqatom
 
+undump       fulleq
+undump       beadseq
 #--- Unfix Equil ---#
 
 unfix abeads_edz
 unfix bbeads_edz
 unfix tbeads_edz
-#unfix mope
 
 unfix freeze_tout
 
@@ -238,51 +199,40 @@ variable       tbzmin  equal bound(tbeads,zmin)
 displace_atoms  alltop move 0.0 0.0 -$(v_tbzmin - v_bbzmax) units box
 variable z_f equal bound(all,zmin)
 variable z_c equal bound(all,zmax)
-change_box all z final ${z_f} $(v_z_c + 0.1) units box
+change_box all z final ${z_f} $(v_z_c + 0.1) units box  # Shrink the box after compression
 
-print         "D = $D"
-print         "D = $(v_twzmin - v_bwzmax)"
 info variables
 
 #--- Computes ---#
 
-# Number density profiles and mop
+# Number density profiles
 
-compute         cabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         cabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             abeads_cdz abeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} cabeads density/number file abeads_cdz
-compute         cbbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         cbbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             bbeads_cdz bbeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} cbbeads density/number file bbeads_cdz
-compute         ctbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         ctbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             tbeads_cdz tbeads  ave/chunk ${Neveryc} ${Nrepeatc} ${Nfreqc} ctbeads density/number file tbeads_cdz
 
-#compute         mopc all stress/mop/profile z lower $(zhi * v_binres) total
-#fix mopc        all ave/time ${Neveryc} ${Nrepeatc} ${Nfreqc} c_mopc[*] ave running overwrite file mopc.time mode vector
-
-
 #--- Fixes ---#
-fix             freeze_tout twout setforce 0.0 0.0 NULL
-fix             comp_tout twout aveforce 0.0 0.0 ${Fcatom}
-fix             rwalls all wall/reflect zlo EDGE zhi EDGE
-
-
-
+fix             freeze_tout twout setforce 0.0 0.0 NULL          # Make top wall into piston can only move in Z direction
+fix             comp_tout twout aveforce 0.0 0.0 ${Fcatom}       # Apply force to each of the top wall atoms
+fix             rwalls all wall/reflect zlo EDGE zhi EDGE        # Reflect all atoms that pass the top or bottom of the simulation box
 
 #--- Dumps ---#
-#dump           comp all image ${Ncomp} stg2.*.jpg type type zoom 1.3 view 60 120 bond none none
-dump            cpxyz all xyz ${Ncomp} cp.xyz
-dump            cpatom all atom ${Ndump_c} cp.dump
+
+dump            fullcp all custom ${Ndump_c} full_cp.dump id type xs ys zs mol
+dump            beadscp abeads custom ${Ndump_c} beads_cp.dump id type xs ys zs mol
 
 #--- Run Compression ---#
 timestep    ${Tstep}
 run         ${Ncomp}
-#undump      comp
-undump      cpxyz
-undump      cpatom
+undump      fullcp
+undump      beadscp
 
 unfix abeads_cdz
 unfix bbeads_cdz
 unfix tbeads_cdz
-#unfix mopc
 
 ###############
 # Shearing    #
@@ -291,35 +241,28 @@ unfix tbeads_cdz
 #--- Keep only thermostat on walls ---#
 unfix lang_melt
 
-velocity    twout set $(v_Vwall/2) 0.0 0.0  units box
-velocity    bwout set -$(v_Vwall/2) 0.0 0.0  units box
+velocity    twout set $(v_Vwall/2) 0.0 0.0  units box       # Apply the relative wall velocities
+velocity    bwout set -$(v_Vwall/2) 0.0 0.0  units box      # In opposite directions for each wall
 
 
 #--- Number Density profiles ---#
 
-compute         sabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         sabeads abeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             abeads_sdz abeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} sabeads density/number file abeads_sdz
-compute         sbbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres)  # Check bound keyword to maybe only bin melt area
+compute         sbbeads bbeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             bbeads_sdz bbeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} sbbeads density/number file bbeads_sdz
-compute         stbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres) # Check bound keyword to maybe only bin melt area
+compute         stbeads tbeads chunk/atom bin/1d z lower $(zhi * v_binres)
 fix             tbeads_sdz tbeads  ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} stbeads density/number file tbeads_sdz
-
-#compute         mops all stress/mop/profile z lower $(zhi * v_binres) total
-#fix mops        all ave/time ${Neverys} ${Nrepeats} ${Nfreqs} c_mops[*] ave running overwrite file mops.time mode vector
 
 
 #--- Temperature and Velocity profiles ---#
 compute        eall all chunk/atom bin/1d z lower $(zhi * v_binres)
-#compute        biasT all temp/profile 1 1 1 xyz 100 100 100
 fix            temp_prof   all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall temp file temp_sz
-#fix            temp_bias   all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall temp bias biasT file tempb_sz
 fix            vel_prof_x_s all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall vx vy file velp_sz
 
-
 #--- Dumps ---#
-#dump           shear all image ${Nshear} stg3.*.jpg type type zoom 1.3 view 60 120 bond none none
-dump            shxyz all xyz ${Nshear} sh.xyz
-dump            shatom all atom ${Ndump_s} sh.dump
+dump            fullsh all custom ${Ndump_s} full_sh.dump id type xs ys zs mol
+dump            beadssh abeads custom ${Ndump_s} beads_sh.dump id type xs ys zs mol
 
 #--- Run Shear ---#
 timestep    ${Tstep}
