@@ -20,8 +20,8 @@ neigh_modify   every 1 delay 10 check yes             # These are default values
 
 # for dimensional values: eps = 4.14e-21 J at T = 300K and sigma = 0.5nm
 
-variable        Pcomp2    equal ${Pcomp}                    # This is to convert them from index style to float
-variable        Vwall     equal ${Vwalli}                   # This is to convert them from index style to float
+variable        Pcomp2    equal ${Pcomp}
+variable        Vwall     equal ${Vwalli}
 
 # For Equilibration - density profiles (10 for entire run)
 variable       Nfreqe   equal ${Nequil}/10                  # Calculate bin averages every this many timesteps
