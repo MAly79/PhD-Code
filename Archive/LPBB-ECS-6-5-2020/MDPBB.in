@@ -40,8 +40,8 @@ bond_coeff    1 fene 30.0 30.0 1.0 1.0                  # NOTE: The Rmax is set 
 bond_coeff    2 harmonic 800.0 $(1.5874 * sqrt(2)/2)    # These values are to keep the FFC wall structure
 special_bonds fene                                      # This kills the pairwise energy between all atoms that are directly bonded
 
-pair_style	  lj/cut $(1.122462 * v_sigLJ )        # LJ potential with rc=2^1/6
-pair_coeff    * * ${epsLJ} ${sigLJ}   # LJ potential between all atoms
+pair_style	  lj/cut 1.122462         # LJ potential with rc=2^1/6
+pair_coeff    * * 1.0 1.0             # LJ potential between all atoms
 pair_coeff    1 1 0.0 0.0             # Except between wall atoms and themselves
 pair_coeff    1 2 0.0 0.0
 pair_coeff    2 2 0.0 0.0
@@ -82,7 +82,6 @@ variable      check0 equal ${check}                       # Count the number of 
 variable      b equal ${check}+1                          # The grafted bead id will be one higher after being inserted
 if            "${twgcount} != $(v_i)" then "jump MDPBB.in loop" # if they are not equal then the atom has already been picked and we restart loop with same i
 create_atoms  2 single ${x0} ${y0} ${z0} mol bs 24987 units box remap yes rotate 0 0 0 1 # Otherwise insert the chain directly above the chosen wall atom pointing perpendicular to the wall
-set           mol $(mol[v_b]) mol $(v_i*2)
 variable      check1 equal ${check}                       # Count the new total number of atoms
 if            "${check1} != ${check0}" then "create_bonds  single/bond 1 ${randatomi} $b" &
 "next i"
@@ -153,7 +152,6 @@ variable      check0 equal ${check}
 variable      b equal ${check}+1
 if            "${bwgcount} != $(v_j)" then "jump MDPBB.in loopj"
 create_atoms  2 single ${x0} ${y0} ${z0} mol bs 24987 units box remap yes rotate 0 0 0 1
-set           mol $(mol[v_b]) mol $(v_j * 2 - 1)
 variable      check1 equal ${check}
 if            "${check1} != ${check0}" then "create_bonds  single/bond 1 ${randatomj} $b" &
 "next j"

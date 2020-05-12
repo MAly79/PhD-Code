@@ -18,7 +18,7 @@ def make_dirs(vals,name):
 def run_sims(b1,b2):
     owd = os.getcwd()
 
-    os.chdir('Sims')
+    os.chdir('Sims2')
 
     Ndirs = os.listdir('.')
     i = 1
@@ -77,4 +77,4 @@ if __name__ == '__main__':
     # for d in ./P*/LPBB-ECS; do (cd "d" && lmp -in main.in);
     # To run on cx1 I imagine something like
     # for d in ./N*/M*/L*/P*/LPBB-ECS; do (cd "d" && qsub lmpJS.pbs);
-    run_sims(0,0)
+    run_sims(201,300)

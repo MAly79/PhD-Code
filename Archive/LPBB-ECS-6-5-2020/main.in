@@ -14,19 +14,11 @@ variable       Nequil    equal 500000          # Number of timesteps to equilibr
 variable       Ncomp     equal 1500000         # Number of timesteps to compress
 variable       Nshear    equal 3000000         # Number of timesteps to shear
 variable       Nthermo   equal 1000            # Number of timesteps between thermo data prints
-variable       Ndump_e   equal 10000           # snapshot every this many timesteps (equilibration)
-variable       Ndump_c   equal 10000           # snapshot every this many timesteps (compression)
-variable       Ndump_s   equal 10000           # snapshot every this many timesteps (Shearing)
+variable       Ndump_e   equal 100000          # snapshot every this many timesteps (equilibration)
+variable       Ndump_c   equal 100000          # snapshot every this many timesteps (compression)
+variable       Ndump_s   equal 100000          # snapshot every this many timesteps (Shearing)
 variable       Vwalli    index 0.0001 0.0005 0.001 0.005 0.01 0.05 0.1 0.5 1  # Relative wall Velocities (+-Vwall/2)
-variable       Pcomp     index 0.5               # Compressive Pressures applied to top wall
-
-
-#--- ForceFields ---#
-variable       epsLJ    equal 1.0
-variable       sigLJ    equal 1.0
-variable       kFENE    equal 30.0
-variable       RmFENE   equal 1.5
-variable       RgSplit  equal 0.5
+variable       Pcomp     index 1                # Compressive Pressures applied to top wall
 
 
 include        MDPBB.in                        # Jump to input script which creates the Brush Bilayer and Minimizes the structure

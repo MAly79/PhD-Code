@@ -11,9 +11,10 @@ reset_timestep  0
 
 #--- Redefine the bond coeffs ---#
 
-bond_coeff    1 fene ${kFENE} ${RmFENE} ${epsLJ} ${sigLJ}                # (K, Rmax) for FENE and (sigma, epsilon) for LJ
-bond_coeff    2 harmonic 800.0 $(1.5874 * sqrt(2)/2)                     # (K,ro) ro is the equilibrium distance
-neigh_modify   every 1 delay 10 check yes                                # These are default values
+bond_coeff    1 fene 30.0 1.5 1.0 1.0                # (K, Rmax) for FENE and (sigma, epsilon) for LJ
+bond_coeff    2 harmonic 800.0 $(1.5874 * sqrt(2)/2) # (K,ro) ro is the equilibrium distance
+
+neigh_modify   every 1 delay 10 check yes             # These are default values
 
 #--- Define variables ---#
 
@@ -64,8 +65,6 @@ region         twallb  block  INF INF INF INF $(v_twzmin - 0.1) $(v_twzmin + 0.3
 region         twallm  block  INF INF INF INF $(v_twzmin + 0.35) $(v_twzmax - 0.35) units box # Top wall bulk layers
 region         twallt  block  INF INF INF INF $(v_twzmax - 0.35) $(v_twzmax) units box        # Top wall top layer
 
-region         bmeltg block INF INF INF INF $(v_bwzmax) $(v_RgSplit * v_twzmax / 2) units box
-region         bmelts block INF INF INF INF $(v_RgSplit * v_twzmax / 2) $(v_twzmax / 2) units box
 
 group          bwsurf  region bwallt                # group of Bottom Wall Inner atoms
 group          bwbulk  region bwallm                # group of Bottom wall bulk atoms
@@ -139,14 +138,6 @@ compute         chunk_bot bbeads chunk/atom molecule         # Creates a chunkID
 compute         rgbbeads bbeads gyration/chunk chunk_bot     # Calculates the radius of gyration of each molecule into a vector
 variable        aveRg    equal  (ave(c_rgbbeads))            # Average the vector values into a single value to ouput in thermo
 
-compute         grafted_part bbeads chunk/atom molecule region bmeltg       # Creates a chunkID for each molecule
-compute         rgbbeadsG bbeads gyration/chunk chunk_bot     # Calculates the radius of gyration of each molecule into a vector
-variable        aveRgG    equal  (ave(c_rgbbeadsG))            # Average the vector values into a single value to ouput in thermo
-
-compute         sheared_part bbeads chunk/atom molecule region bmelts         # Creates a chunkID for each molecule
-compute         rgbbeadsS bbeads gyration/chunk chunk_bot     # Calculates the radius of gyration of each molecule into a vector
-variable        aveRgS    equal  (ave(c_rgbbeadsS))            # Average the vector values into a single value to ouput in thermo
-
 
 #--- Fixes (Equil) ---#
 
@@ -174,20 +165,20 @@ fix             freeze_tout twout setforce 0.0 0.0 0.0
 
 #--- Thermo output ---#
 
-thermo_style  custom step etotal ke pe epair temp c_melTemp c_wallTemp v_Fcatom v_Pcomp2 press pxx pyy pzz pxy pxz pyz c_Vir c_Vir[1] c_Vir[2] c_Vir[3] c_Vir[4] c_Vir[5] c_Vir[6] c_melPress c_wallPress v_melDens v_surfcov v_aveRg v_aveRgG v_aveRgS v_Vwall v_srate v_D v_bwzmax zhi c_fbwall[1] c_fbwall[3] c_ftwall[1] c_ftwall[3] c_ggbot[1] c_ggbot[3] c_ggtop[1] c_ggtop[3]
+thermo_style  custom step etotal ke pe epair temp c_melTemp c_wallTemp v_Fcatom v_Pcomp2 press pxx pyy pzz pxy pxz pyz c_Vir c_Vir[1] c_Vir[2] c_Vir[3] c_Vir[4] c_Vir[5] c_Vir[6] c_melPress c_wallPress v_melDens v_surfcov v_aveRg v_Vwall v_srate v_D v_bwzmax zhi c_fbwall[1] c_fbwall[3] c_ftwall[1] c_ftwall[3] c_ggbot[1] c_ggbot[3] c_ggtop[1] c_ggtop[3]
 thermo        ${Nthermo}
 thermo_modify flush yes
 
 #--- Dumps ---#
 
 dump            fulleq all custom ${Ndump_e} full_eq.dump id type xs ys zs mol
-#dump            beadseq bbeads custom ${Ndump_e} beads_eq.dump id type xs ys zs mol
+dump            beadseq bbeads custom ${Ndump_e} beads_eq.dump id type xs ys zs mol
 #--- Run Equilibration ---#
 timestep    ${Tstep}
 run         ${Nequil}
 
 undump       fulleq
-#undump       beadseq
+undump       beadseq
 #--- Unfix Equil ---#
 
 unfix abeads_edz
@@ -232,13 +223,13 @@ fix             rwalls all wall/reflect zlo EDGE zhi EDGE        # Reflect all a
 #--- Dumps ---#
 
 dump            fullcp all custom ${Ndump_c} full_cp.dump id type xs ys zs mol
-#dump            beadscp abeads custom ${Ndump_c} beads_cp.dump id type xs ys zs mol
+dump            beadscp abeads custom ${Ndump_c} beads_cp.dump id type xs ys zs mol
 
 #--- Run Compression ---#
 timestep    ${Tstep}
 run         ${Ncomp}
 undump      fullcp
-#undump      beadscp
+undump      beadscp
 
 unfix abeads_cdz
 unfix bbeads_cdz
@@ -272,7 +263,7 @@ fix            vel_prof_x_s all ave/chunk ${Neverys} ${Nrepeats} ${Nfreqs} eall 
 
 #--- Dumps ---#
 dump            fullsh all custom ${Ndump_s} full_sh.dump id type xs ys zs mol
-#dump            beadssh abeads custom ${Ndump_s} beads_sh.dump id type xs ys zs mol
+dump            beadssh abeads custom ${Ndump_s} beads_sh.dump id type xs ys zs mol
 
 #--- Run Shear ---#
 timestep    ${Tstep}
